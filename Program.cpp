@@ -5,7 +5,7 @@
 #include "ExampleComponent.h"`
 #include "Scene.h"
 
-#include <Jolt/Jolt.h>
+#include <Jolt.h>
 
 int main()
 {
