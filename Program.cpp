@@ -1,14 +1,19 @@
 #include <iostream>
 #include <cassert>
-#include "raylib-cpp.hpp"
 #include "GameObject.h"
+#include "PhysicsManager.h"
 #include "ExampleComponent.h"`
 #include "Scene.h"
+#include "raylib-cpp.hpp"
 
 #include <Jolt.h>
 
 int main()
 {
+    // PHYSICS SETUP //
+    PhysicsManager& physics = PhysicsManager::Get();
+    physics.Init();
+
     // SCENE SETUP //
     int screenWidth = 1000;
     int screenHeight = 700;
@@ -31,21 +36,33 @@ int main()
 
     SetTargetFPS(60);
 
+    const float physicsStep = 1.0f / 60.0f;
+    float accumulator = 1.0f / 60.0f;
+
     // APPLICATION LOOP //
     while (!window.ShouldClose()) 
     {
+        float deltaTime = GetFrameTime();
+        accumulator += deltaTime;
+
+        while (accumulator >= physicsStep)
+        {
+            physics.Update(physicsStep);
+            accumulator -= physicsStep;
+        }
+
         BeginDrawing();
 
-        window.ClearBackground(RAYWHITE);
+        window.ClearBackground(raylib::RAYWHITE);
 
         cam.BeginMode();
 
             Scene::GetActive().Update3D();
 
-            Vec3 pos = obj1->GetTransform().position;
+            MyEngine::Vec3 pos = obj1->GetTransform().position;
 
-            DrawCube(pos, 2, 2, 2, RED);
-            DrawCubeWires(pos, 2, 2, 2, BLACK);
+            DrawCube(pos, 2, 2, 2, raylib::RED);
+            DrawCubeWires(pos, 2, 2, 2, raylib::BLACK);
 
             DrawGrid(10, 1.0f);
             

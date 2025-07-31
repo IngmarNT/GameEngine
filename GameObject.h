@@ -5,7 +5,7 @@
 #include <memory>
 #include "IComponent.h"
 #include "Scene.h"
-#include "raylib-class-wrappers.h"
+#include "RaylibClassWrappers.h"
 using namespace MyEngine;
 
 class IComponent; //Forward declaration to avoid circular dependancy

@@ -20,7 +20,8 @@ void ExampleComponent::Update2D()
 {
 	static raylib::Camera& cam = Scene::GetActive().GetCamera();
 
-	DrawText("Game Engine!", GetScreenWidth() / 2, GetScreenHeight() / 2, 40, BLACK);
+	DrawText("Game Engine!", 10, 10, 40, BLACK);
+	DrawFPS(GetScreenWidth() - 100, 10);
 }
 
 void ExampleComponent::Update3D() 

@@ -1,3 +1,9 @@
 [submodule "external/JoltPhysics"]
 	path = external/JoltPhysics
 	url = https://github.com/jrouwe/JoltPhysics
+[submodule "external/raylib"]
+	path = external/raylib
+	url = https://github.com/raysan5/raylib.git
+[submodule "external/raylib-cpp"]
+	path = external/raylib-cpp
+	url = https://github.com/RobLoach/raylib-cpp.git
