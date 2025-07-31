@@ -1,0 +1,27 @@
+# Build artifacts
+*.obj
+*.ilk
+*.pdb
+*.exe
+*.dll
+*.lib
+bin/
+Debug/
+Release/
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+ipch/
+*.VC.db
+*.sdf
+*.tlog
+*.lastbuildstate
+
+# Temporary files
+*.~*
+*.tmp
+
+# NuGet packages
+packages/
