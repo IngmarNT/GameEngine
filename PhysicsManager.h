@@ -12,12 +12,12 @@ public:
 
     void Update(float deltaTime);
 
-    PhysicsSystem* GetSystem() { return &mPhysicsSystem; }
+    JPH::PhysicsSystem& GetSystem() { return mPhysicsSystem; }
 
 private:
     // Allocators and threading
-    TempAllocatorImpl* mTempAllocator = nullptr;
-    JobSystemThreadPool* mJobSystem = nullptr;
+    JPH::TempAllocatorImpl* mTempAllocator = nullptr;
+    JPH::JobSystemThreadPool* mJobSystem = nullptr;
 
     // Collision filtering and listeners
     BPLayerInterfaceImpl mBroadPhaseLayerInterface;
@@ -27,7 +27,7 @@ private:
     MyContactListener mContactListener;
 
     // The main physics system
-    PhysicsSystem mPhysicsSystem;
+    JPH::PhysicsSystem mPhysicsSystem;
 
     PhysicsManager();
     ~PhysicsManager();

@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <memory>
-#include "GameObject.h"
 
 class GameObject;
 
@@ -17,6 +16,7 @@ public:
 	virtual void Start() = 0;
 	virtual void Update2D() = 0;
 	virtual void Update3D() = 0;
+	virtual void FixedUpdate() = 0;
 
 	template<typename T>
 	static std::shared_ptr<T> Create(GameObject& gM) 

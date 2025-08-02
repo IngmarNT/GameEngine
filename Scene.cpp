@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "PhysicsManager.h"
 
 Scene::Scene() {}
 
@@ -34,6 +35,39 @@ void Scene::Update3D()
 	for (auto obj : sceneObjects)
 	{
 		obj->Update3D();
+	}
+}
+
+void Scene::FixedUpdate()
+{
+	const float physicsStep = 1.0f / 60.0f;
+	const int maxStep = 6;
+	static float accumulator = 0.0f;
+	int step = 0;
+
+	float deltaTime = GetFrameTime();
+	accumulator += deltaTime;
+
+	for (auto obj : sceneObjects)
+	{
+		obj->FixedUpdate();
+	}
+
+	while (accumulator >= physicsStep && step < maxStep) 
+	{
+		PhysicsManager::Get().Update(physicsStep);
+
+		step++;
+		accumulator -= physicsStep;
+	}
+
+	for (auto& obj : sceneObjects)
+	{
+		auto physics = obj->GetComponent<PhysicsComponent>();
+		if (physics)
+		{
+			physics->SyncFromTransform();
+		}
 	}
 }
 

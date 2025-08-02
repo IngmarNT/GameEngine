@@ -135,6 +135,8 @@
   <ItemGroup>
     <ClCompile Include="ExampleComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ModelComponent.cpp" />
+    <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -142,8 +144,10 @@
   <ItemGroup>
     <ClInclude Include="ExampleComponent.h" />
     <ClInclude Include="JoltSetup.h" />
+    <ClInclude Include="ModelComponent.h" />
+    <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="PhysicsManager.h" />
-    <ClInclude Include="RaylibClassWrappers.h" />
+    <ClInclude Include="DataTypes.h" />
     <ClInclude Include="IComponent.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Scene.h" />

@@ -42,6 +42,14 @@ void GameObject::Update3D()
 	}
 }
 
+void GameObject::FixedUpdate()
+{
+	for (auto component : this->components)
+	{
+		component->FixedUpdate();
+	}
+}
+
 std::string GameObject::GetName() { return this->name; }
 
 GameTransform& GameObject::GetTransform() { return this->transform; }

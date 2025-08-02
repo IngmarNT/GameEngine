@@ -1,10 +1,13 @@
 #include <iostream>
 #include <cassert>
+#include "raylib-cpp.hpp"
+#include "rlgl.h"
 #include "GameObject.h"
 #include "PhysicsManager.h"
-#include "ExampleComponent.h"`
+#include "ExampleComponent.h"
+#include "PhysicsComponent.h"
+#include "ModelComponent.h"
 #include "Scene.h"
-#include "raylib-cpp.hpp"
 
 #include <Jolt.h>
 
@@ -28,28 +31,42 @@ int main()
 
     auto obj1 = GameObject::Create();
     auto obj2 = GameObject::Create(obj1);
-    obj1->SetParent(obj2);
+
+    std::shared_ptr<raylib::Model> monkey = make_shared<raylib::Model>("Assets/Monkey.obj");
+
+    MyEngine::PhysicsBodyConfig config1;
+    config1.shapeType = MyEngine::PhysicsShapeType::Custom;
+    config1.meshVertices = MyEngine::GetVerticesFromModel(*monkey);
+    config1.mass = 1.0f;
+
+    MyEngine::PhysicsBodyConfig config2;
+    config2.shapeType = MyEngine::PhysicsShapeType::Box;
+    config2.motionType = JPH::EMotionType::Static;
+    config2.layer = Layers::NON_MOVING;
+    config2.dimensions = JPH::Vec3(5.0f, 1.0f, 5.0f);
+
+    obj1->GetTransform().Translate(MyEngine::Vec3(0.0f, 3.0f, 0.0f));
+    obj2->GetTransform().Translate(MyEngine::Vec3(0.0f, -1.01f, 0.0f));
+    obj1->GetTransform().Scale(MyEngine::Vec3(0.5f, 0.5f, 0.5f));
+    obj2->GetTransform().Scale(MyEngine::Vec3(5.0f, 1.0f, 5.0f));
 
     (void)IComponent::Create<ExampleComponent>(*obj1);
 
-    Scene::GetActive().Start();
+    (void)ModelComponent::Create(*obj1, monkey);
+    (void)ModelComponent::Create(*obj2, MyEngine::DefaultShapes::Box);
+
+    (void)PhysicsComponent::Create(*obj1, config1);
+    (void)PhysicsComponent::Create(*obj2, config2);
+
+    Scene& scene = Scene::GetActive();
+    scene.Start();
 
     SetTargetFPS(60);
-
-    const float physicsStep = 1.0f / 60.0f;
-    float accumulator = 1.0f / 60.0f;
 
     // APPLICATION LOOP //
     while (!window.ShouldClose()) 
     {
-        float deltaTime = GetFrameTime();
-        accumulator += deltaTime;
-
-        while (accumulator >= physicsStep)
-        {
-            physics.Update(physicsStep);
-            accumulator -= physicsStep;
-        }
+        scene.FixedUpdate();
 
         BeginDrawing();
 
@@ -57,18 +74,13 @@ int main()
 
         cam.BeginMode();
 
-            Scene::GetActive().Update3D();
+            scene.Update3D();
 
-            MyEngine::Vec3 pos = obj1->GetTransform().position;
-
-            DrawCube(pos, 2, 2, 2, raylib::RED);
-            DrawCubeWires(pos, 2, 2, 2, raylib::BLACK);
-
-            DrawGrid(10, 1.0f);
+            //DrawGrid(10, 1.0f);
             
         cam.EndMode();
 
-        Scene::GetActive().Update2D();
+        scene.Update2D();
 
         EndDrawing();
     }

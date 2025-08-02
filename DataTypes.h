@@ -1,6 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include "raymath.h"
+#include "JoltSetup.h"
 #include <cmath>
 
 namespace MyEngine {
@@ -10,6 +11,8 @@ namespace MyEngine {
 	struct Vec4;
 	class Quat;
 	class GameTransform;
+	enum class PhysicsShapeType;
+	struct PhysicsBodyConfig;
 
 	struct Vec2
 	{
@@ -183,4 +186,60 @@ namespace MyEngine {
 		void Rotate(Quat q) { rotation *= q; }
 		void Scale(Vec3 s) { scale = scale.Multiply(s); }
 	};
+
+	enum class PhysicsShapeType
+	{
+		Box,
+		Sphere,
+		Capsule,
+		Custom
+	};
+
+	struct PhysicsBodyConfig
+	{
+		PhysicsShapeType shapeType = PhysicsShapeType::Box;
+		JPH::EActivation activationType = JPH::EActivation::Activate;
+		JPH::ObjectLayer layer = Layers::MOVING;
+		JPH::Vec3 dimensions = JPH::Vec3(1.0f, 1.0f, 1.0f);
+		std::vector<Vec3> meshVertices;
+		float radius = 1.0f; // used for spheres, capsules
+		float height = 2.0f; // used for capsules
+		float mass = 1.0f;
+		JPH::EMotionType motionType = JPH::EMotionType::Dynamic;
+		float friction = 0.7f;
+		float restitution = 0.2f;
+		JPH::uint64 userData = 0;
+	};
+
+	enum class DefaultShapes 
+	{
+		Box,
+		Sphere,
+		Torus,
+		Cone
+	};
+
+	static std::vector<Vec3> GetVerticesFromModel(const Model& model)
+	{
+		std::vector<Vec3> points;
+
+		for (int i = 0; i < model.meshCount; ++i)
+		{
+			const Mesh& mesh = model.meshes[i];
+
+			if (!mesh.vertices || mesh.vertexCount == 0)
+				continue;
+
+			for (int v = 0; v < mesh.vertexCount; ++v)
+			{
+				float x = mesh.vertices[v * 3 + 0];
+				float y = mesh.vertices[v * 3 + 1];
+				float z = mesh.vertices[v * 3 + 2];
+
+				points.emplace_back(x, y, z);
+			}
+		}
+
+		return points;
+	}
 }

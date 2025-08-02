@@ -21,6 +21,7 @@ public:
 	void Start();
 	void Update2D();
 	void Update3D();
+	void FixedUpdate();
 
 	bool CheckInScene(std::shared_ptr<GameObject> obj);
 	bool AddObject(std::shared_ptr<GameObject> obj);
