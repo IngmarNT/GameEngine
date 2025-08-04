@@ -2,24 +2,26 @@
 #include <cassert>
 #include "raylib-cpp.hpp"
 #include "rlgl.h"
-#include "GameObject.h"
 #include "PhysicsManager.h"
 #include "ExampleComponent.h"
 #include "PhysicsComponent.h"
 #include "ModelComponent.h"
 #include "Scene.h"
 
+#include "nlohmann/json.hpp"
 #include <Jolt.h>
 
 int main()
 {
     // PHYSICS SETUP //
+    float physicsStep = 1.0f / 30.0f;
+
     PhysicsManager& physics = PhysicsManager::Get();
-    physics.Init();
+    physics.Init(physicsStep);
 
     // SCENE SETUP //
-    int screenWidth = 1000;
-    int screenHeight = 700;
+    int screenWidth = 1280;
+    int screenHeight = 720;
 
     raylib::Window window(screenWidth, screenHeight, "engine-cpp");
     raylib::Camera3D& cam = Scene::GetActive().GetCamera();
@@ -38,7 +40,8 @@ int main()
     config1.shapeType = MyEngine::PhysicsShapeType::Custom;
     config1.meshVertices = MyEngine::GetVerticesFromModel(*monkey);
     config1.mass = 1.0f;
-
+    config1.dof = JPH::EAllowedDOFs::All;
+    
     MyEngine::PhysicsBodyConfig config2;
     config2.shapeType = MyEngine::PhysicsShapeType::Box;
     config2.motionType = JPH::EMotionType::Static;
@@ -49,19 +52,20 @@ int main()
     obj2->GetTransform().Translate(MyEngine::Vec3(0.0f, -1.01f, 0.0f));
     obj1->GetTransform().Scale(MyEngine::Vec3(0.5f, 0.5f, 0.5f));
     obj2->GetTransform().Scale(MyEngine::Vec3(5.0f, 1.0f, 5.0f));
+    obj1->GetTransform().Rotate(MyEngine::Quat::FromEuler(0.0f, 180.0f, 0.0f));
 
     (void)IComponent::Create<ExampleComponent>(*obj1);
 
-    (void)ModelComponent::Create(*obj1, monkey);
+    (void)ModelComponent::Create(*obj1, monkey, true);
     (void)ModelComponent::Create(*obj2, MyEngine::DefaultShapes::Box);
 
-    (void)PhysicsComponent::Create(*obj1, config1);
+    auto p1 = PhysicsComponent::Create(*obj1, config1);
     (void)PhysicsComponent::Create(*obj2, config2);
 
     Scene& scene = Scene::GetActive();
     scene.Start();
 
-    SetTargetFPS(60);
+    SetTargetFPS(144);
 
     // APPLICATION LOOP //
     while (!window.ShouldClose()) 

@@ -14,13 +14,15 @@ PhysicsManager& PhysicsManager::Get()
     return instance;
 }
 
-void PhysicsManager::Init()
+void PhysicsManager::Init(float _physicsStep)
 {
     // Set trace and assert functions
     Trace = TraceImpl;
 #ifdef JPH_ENABLE_ASSERTS
     AssertFailed = AssertFailedImpl;
 #endif
+
+    this->physicsStep = _physicsStep;
 
     // Register all Jolt types
     RegisterDefaultAllocator();

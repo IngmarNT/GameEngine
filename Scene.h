@@ -14,6 +14,8 @@ private:
 
 	std::vector<std::shared_ptr<GameObject>> sceneObjects;
 	raylib::Camera3D mainCamera;
+
+	float physicsAlpha = 0.0f;
 public:
 	static Scene& GetActive();
 	raylib::Camera3D& GetCamera();
@@ -26,4 +28,6 @@ public:
 	bool CheckInScene(std::shared_ptr<GameObject> obj);
 	bool AddObject(std::shared_ptr<GameObject> obj);
 	bool RemoveObject(std::shared_ptr<GameObject> obj);
+
+	float GetPhysicsAlpha();
 };

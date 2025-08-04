@@ -9,6 +9,9 @@ class GameObject;
 class PhysicsComponent : public IComponent
 {
 private:
+	MyEngine::Vec3 previousPosition;
+	Quaternion previousRotation;
+
 	JPH::BodyID bodyID;
 	MyEngine::PhysicsBodyConfig bodyConfig;
 public:

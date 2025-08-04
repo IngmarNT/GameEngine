@@ -6,6 +6,8 @@ class ExampleComponent : public IComponent
 {
 private:
 	std::shared_ptr<PhysicsComponent> pComp;
+	MyEngine::Vec3 move;
+	bool jumpQueued;
 public:
 	ExampleComponent(GameObject& gM);
 

@@ -7,7 +7,7 @@ class PhysicsManager
 public:
     static PhysicsManager& Get();
 
-    void Init();
+    void Init(float _physicsStep = 1.0f / 30.0f);
     void Shutdown();
 
     void Update(float deltaTime);
@@ -28,6 +28,7 @@ private:
 
     // The main physics system
     JPH::PhysicsSystem mPhysicsSystem;
+    float physicsStep;
 
     PhysicsManager();
     ~PhysicsManager();

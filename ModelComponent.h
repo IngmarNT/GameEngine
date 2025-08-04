@@ -9,11 +9,12 @@ class ModelComponent : public IComponent
 {
 private:
 	std::shared_ptr<raylib::Model> model;
+	bool doInterpolation;
 public:
-	ModelComponent(GameObject& gM, std::shared_ptr<raylib::Model> _model);
+	ModelComponent(GameObject& gM, std::shared_ptr<raylib::Model> _model, bool interp);
 
-	static std::shared_ptr<ModelComponent> Create(GameObject& gM, MyEngine::DefaultShapes shape);
-	static std::shared_ptr<ModelComponent> Create(GameObject& gM, std::shared_ptr<raylib::Model> _model);
+	static std::shared_ptr<ModelComponent> Create(GameObject& gM, MyEngine::DefaultShapes shape, bool interp = false);
+	static std::shared_ptr<ModelComponent> Create(GameObject& gM, std::shared_ptr<raylib::Model> _model, bool interp = false);
 
 	void Initialize() override;
 	void Start() override;

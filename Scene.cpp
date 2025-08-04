@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "PhysicsManager.h"
+#include <iostream>
 
 Scene::Scene() {}
 
@@ -44,24 +45,27 @@ void Scene::FixedUpdate()
 	const int maxStep = 6;
 	static float accumulator = 0.0f;
 	int step = 0;
-
+	
 	float deltaTime = GetFrameTime();
 	accumulator += deltaTime;
 
-	for (auto obj : sceneObjects)
-	{
-		obj->FixedUpdate();
-	}
-
 	while (accumulator >= physicsStep && step < maxStep) 
 	{
+		for (auto obj : sceneObjects)
+		{
+			obj->GetTransform().SavePrevious();
+			obj->FixedUpdate();
+		}
+
 		PhysicsManager::Get().Update(physicsStep);
 
 		step++;
 		accumulator -= physicsStep;
 	}
 
-	for (auto& obj : sceneObjects)
+	physicsAlpha = std::clamp(accumulator / physicsStep, 0.0f, 1.0f);
+
+	for (auto obj : sceneObjects)
 	{
 		auto physics = obj->GetComponent<PhysicsComponent>();
 		if (physics)
@@ -104,3 +108,5 @@ bool Scene::RemoveObject(std::shared_ptr<GameObject> obj)
 	}
 	return false;
 }
+
+float Scene::GetPhysicsAlpha() { return this->physicsAlpha; }

@@ -6,6 +6,11 @@
 
 namespace MyEngine {
 
+	constexpr JPH::EAllowedDOFs Translation3D = 
+		( JPH::EAllowedDOFs::TranslationX 
+		| JPH::EAllowedDOFs::TranslationY 
+		| JPH::EAllowedDOFs::TranslationZ );
+
 	struct Vec2;
 	struct Vec3;
 	struct Vec4;
@@ -150,7 +155,7 @@ namespace MyEngine {
 
 		static Quat FromEuler(float pitch, float yaw, float roll)
 		{
-			return Quat(QuaternionFromEuler(pitch, yaw, roll));
+			return Quat(QuaternionFromEuler(pitch * DEG2RAD, yaw * DEG2RAD, roll * DEG2RAD));
 		}
 
 		static Quat Lerp(Quat q1, Quat q2, float amount) { return Quat(QuaternionLerp(q1.data, q2.data, amount)); }
@@ -179,6 +184,22 @@ namespace MyEngine {
 		Vec3 position;
 		Quat rotation;
 		Vec3 scale;
+
+		Vec3 previousPosition;
+		Quat previousRotation;
+
+		void SavePrevious() {
+			previousPosition = position;
+			previousRotation = rotation;
+		}
+
+		Vec3 GetInterpolatedPosition(float alpha) const {
+			return Vec3::Lerp(previousPosition, position, alpha);
+		}
+
+		Quaternion GetInterpolatedRotation(float alpha) const {
+			return Quat::Slerp(previousRotation, rotation, alpha);
+		}
 
 		GameTransform() : position(Vec3(0, 0, 0)), rotation(Quat(0, 0, 0, 1)), scale(Vec3(1, 1, 1)) {}
 
@@ -209,6 +230,7 @@ namespace MyEngine {
 		float friction = 0.7f;
 		float restitution = 0.2f;
 		JPH::uint64 userData = 0;
+		JPH::EAllowedDOFs dof = JPH::EAllowedDOFs::All;
 	};
 
 	enum class DefaultShapes 

@@ -105,7 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;JPH_PROFILE_ENABLED=1;JPH_OBJECT_STREAM=1;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED=1;JPH_DEBUG_RENDERER=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)external\JoltPhysics;$(ProjectDir)external\JoltPhysics\Jolt;$(ProjectDir)external\raylib\src;$(ProjectDir)external\raylib-cpp\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)external\JoltPhysics;$(ProjectDir)external\JoltPhysics\Jolt;$(ProjectDir)external\raylib\src;$(ProjectDir)external\raylib-cpp\include;$(ProjectDir)external\nlohmann_json\single_include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>

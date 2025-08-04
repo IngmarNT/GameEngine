@@ -4,6 +4,7 @@
 #include <Jolt/Geometry/ConvexHullBuilder.h>
 #include <Jolt/Physics/Collision/Shape/ConvexHullShape.h>
 #include <Jolt/Physics/Collision/Shape/ConvexShape.h>
+#include <Jolt/Physics/Constraints/SwingTwistConstraint.h>
 #include <Jolt/Core/TempAllocator.h>
 #include <Jolt/Core/Factory.h>
 #include <vector>
@@ -70,10 +71,12 @@ void PhysicsComponent::Start()
 
 	auto& transform = gameObject.GetTransform();
 
+	Quaternion q = transform.rotation.Get();
+
 	JPH::BodyCreationSettings settings(
 		shape,
 		JPH::RVec3(transform.position.x, transform.position.y, transform.position.z),
-		JPH::Quat::sIdentity(),
+		JPH::Quat(q.x, q.y, q.z, q.w),
 		bodyConfig.motionType,
 		bodyConfig.layer
 	);
@@ -83,6 +86,7 @@ void PhysicsComponent::Start()
 	settings.mFriction = bodyConfig.friction;
 	settings.mRestitution = bodyConfig.restitution;
 	settings.mUserData = bodyConfig.userData;
+	settings.mAllowedDOFs = bodyConfig.dof;
 
 	JPH::PhysicsSystem& system = PhysicsManager::Get().GetSystem();
 	JPH::BodyInterface& bodyInterface = system.GetBodyInterface();
@@ -90,9 +94,7 @@ void PhysicsComponent::Start()
 	bodyID = bodyInterface.CreateAndAddBody(settings, bodyConfig.activationType);
 }
 
-void PhysicsComponent::FixedUpdate() 
-{
-}
+void PhysicsComponent::FixedUpdate() {}
 
 void PhysicsComponent::SyncToTransform() 
 {
