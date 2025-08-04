@@ -40,7 +40,7 @@ int main()
     config1.shapeType = MyEngine::PhysicsShapeType::Custom;
     config1.meshVertices = MyEngine::GetVerticesFromModel(*monkey);
     config1.mass = 1.0f;
-    config1.dof = JPH::EAllowedDOFs::All;
+    config1.dof = JPH::EAllowedDOFs::All; //JPH::EAllowedDOFs::TranslationX | JPH::EAllowedDOFs::TranslationY | JPH::EAllowedDOFs::TranslationZ;
     
     MyEngine::PhysicsBodyConfig config2;
     config2.shapeType = MyEngine::PhysicsShapeType::Box;

@@ -105,7 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;JPH_PROFILE_ENABLED=1;JPH_OBJECT_STREAM=1;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED=1;JPH_DEBUG_RENDERER=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)external\JoltPhysics;$(ProjectDir)external\JoltPhysics\Jolt;$(ProjectDir)external\raylib\src;$(ProjectDir)external\raylib-cpp\include;$(ProjectDir)external\nlohmann_json\single_include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)external\JoltPhysics;$(ProjectDir)external\JoltPhysics\Jolt;$(ProjectDir)external\raylib\src;$(ProjectDir)external\raylib-cpp\include;$(ProjectDir)external\nlohmann_json\single_include;$(ProjectDir)Source</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -133,24 +133,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ExampleComponent.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="ModelComponent.cpp" />
-    <ClCompile Include="PhysicsComponent.cpp" />
-    <ClCompile Include="PhysicsManager.cpp" />
-    <ClCompile Include="Program.cpp" />
-    <ClCompile Include="Scene.cpp" />
+    <None Include="Scene.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ExampleComponent.h" />
-    <ClInclude Include="JoltSetup.h" />
-    <ClInclude Include="ModelComponent.h" />
-    <ClInclude Include="PhysicsComponent.h" />
-    <ClInclude Include="PhysicsManager.h" />
-    <ClInclude Include="DataTypes.h" />
-    <ClInclude Include="IComponent.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Source\DataTypes.h" />
+    <ClInclude Include="Source\ExampleComponent.h" />
+    <ClInclude Include="Source\GameObject.h" />
+    <ClInclude Include="Source\IComponent.h" />
+    <ClInclude Include="Source\ModelComponent.h" />
+    <ClInclude Include="Source\PhysicsComponent.h" />
+    <ClInclude Include="Source\PhysicsManager.h" />
+    <ClInclude Include="Source\Scene.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\ExampleComponent.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\ModelComponent.cpp" />
+    <ClCompile Include="Source\PhysicsComponent.cpp" />
+    <ClCompile Include="Source\PhysicsManager.cpp" />
+    <ClCompile Include="Source\Program.cpp" />
+    <ClCompile Include="Source\Scene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

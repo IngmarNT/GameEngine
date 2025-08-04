@@ -6,11 +6,6 @@
 
 namespace MyEngine {
 
-	constexpr JPH::EAllowedDOFs Translation3D = 
-		( JPH::EAllowedDOFs::TranslationX 
-		| JPH::EAllowedDOFs::TranslationY 
-		| JPH::EAllowedDOFs::TranslationZ );
-
 	struct Vec2;
 	struct Vec3;
 	struct Vec4;
