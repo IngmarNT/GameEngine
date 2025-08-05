@@ -41,37 +41,6 @@ int main()
         JSONParsing::GenerateSceneFromJSON(data);
     }
 
-    /*auto obj1 = GameObject::Create();
-    auto obj2 = GameObject::Create(obj1);
-
-    std::shared_ptr<raylib::Model> monkey = make_shared<raylib::Model>("Assets/Monkey.obj");
-
-    MyEngine::PhysicsBodyConfig config1;
-    config1.shapeType = MyEngine::PhysicsShapeType::Custom;
-    config1.meshVertices = MyEngine::GetVerticesFromModel(*monkey);
-    config1.mass = 1.0f;
-    config1.dof = JPH::EAllowedDOFs::All; //JPH::EAllowedDOFs::TranslationX | JPH::EAllowedDOFs::TranslationY | JPH::EAllowedDOFs::TranslationZ;
-    
-    MyEngine::PhysicsBodyConfig config2;
-    config2.shapeType = MyEngine::PhysicsShapeType::Box;
-    config2.motionType = JPH::EMotionType::Static;
-    config2.layer = Layers::NON_MOVING;
-    config2.dimensions = JPH::Vec3(5.0f, 1.0f, 5.0f);
-
-    obj1->GetTransform().Translate(MyEngine::Vec3(0.0f, 3.0f, 0.0f));
-    obj2->GetTransform().Translate(MyEngine::Vec3(0.0f, -1.01f, 0.0f));
-    obj1->GetTransform().Scale(MyEngine::Vec3(0.5f, 0.5f, 0.5f));
-    obj2->GetTransform().Scale(MyEngine::Vec3(5.0f, 1.0f, 5.0f));
-    obj1->GetTransform().Rotate(MyEngine::Quat::FromEuler(0.0f, 180.0f, 0.0f));
-
-    (void)IComponent::Create<ControllerComponent>(*obj1);
-
-    (void)ModelComponent::Create(*obj1, monkey, true);
-    (void)ModelComponent::Create(*obj2, MyEngine::DefaultModelShapes::Box);
-
-    auto p1 = PhysicsComponent::Create(*obj1, config1);
-    (void)PhysicsComponent::Create(*obj2, config2);*/
-
     Scene& scene = Scene::GetActive();
     scene.Start();
 
@@ -98,6 +67,8 @@ int main()
 
         EndDrawing();
     }
+
+    PhysicsManager::Get().Shutdown();
 
     return 0;
 }

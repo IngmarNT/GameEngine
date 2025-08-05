@@ -113,7 +113,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)external\JoltPhysics\Build\build\Debug;$(ProjectDir)external\raylib\build\raylib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Jolt.lib;raylib.lib;winmm.lib</AdditionalDependencies>
+      <AdditionalDependencies>Jolt.lib;raylib.lib;User32.lib;Gdi32.lib;Shell32.lib;Ole32.lib;OleAut32.lib;Advapi32.lib;Comdlg32.lib;Ws2_32.lib;Winmm.lib;version.lib;setupapi.lib;Imm32.lib;Shlwapi.lib;Dwmapi.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -122,15 +122,19 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;JPH_PROFILE_ENABLED=1;JPH_OBJECT_STREAM=1;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED=1;JPH_DEBUG_RENDERER=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)external\JoltPhysics;$(ProjectDir)external\JoltPhysics\Jolt;$(ProjectDir)external\raylib\src;$(ProjectDir)external\raylib-cpp\include;$(ProjectDir)external\nlohmann_json\single_include;$(ProjectDir)Source</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Jolt.lib;raylib.lib;winmm.lib</AdditionalDependencies>
+      <AdditionalDependencies>Jolt.lib;raylib.lib;User32.lib;Gdi32.lib;Shell32.lib;Ole32.lib;OleAut32.lib;Advapi32.lib;Comdlg32.lib;Ws2_32.lib;Winmm.lib;version.lib;setupapi.lib;Imm32.lib;Shlwapi.lib;Dwmapi.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)external\JoltPhysics\Build\VS2022_CL\RELEASE;$(ProjectDir)external\raylib\build\raylib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
