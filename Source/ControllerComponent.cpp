@@ -1,17 +1,17 @@
-#include "ExampleComponent.h"
+#include "ControllerComponent.h"
 #include "PhysicsManager.h"
 #include "raylib-cpp.hpp"
 #include <iostream>
 #include <cmath>
 
-ExampleComponent::ExampleComponent(GameObject& gM) : IComponent(gM) {}
+ControllerComponent::ControllerComponent(GameObject& gM) : IComponent(gM) {}
 
-void ExampleComponent::Initialize() 
+void ControllerComponent::Initialize() 
 {
 	this->gameObject.AddComponent(shared_from_this());
 }
 
-void ExampleComponent::Start() 
+void ControllerComponent::Start() 
 {
 	if (auto p = gameObject.GetComponent<PhysicsComponent>()) 
 	{
@@ -21,7 +21,7 @@ void ExampleComponent::Start()
 	}
 }
 
-void ExampleComponent::FixedUpdate() 
+void ControllerComponent::FixedUpdate() 
 {
 	static auto& bodyInterface = PhysicsManager::Get().GetSystem().GetBodyInterface();
 	if (!pComp) return;
@@ -40,13 +40,13 @@ void ExampleComponent::FixedUpdate()
 	}
 }
 
-void ExampleComponent::Update2D() 
+void ControllerComponent::Update2D() 
 {
 	//DrawText("Game Engine!", 10, 10, 40, BLACK);
 	DrawFPS(GetScreenWidth() - 100, 10);
 }
 
-void ExampleComponent::Update3D() 
+void ControllerComponent::Update3D() 
 {
 	static raylib::Camera& cam = Scene::GetActive().GetCamera();
 	static MyEngine::GameTransform& t = gameObject.GetTransform();

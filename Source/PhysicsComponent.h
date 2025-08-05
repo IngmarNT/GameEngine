@@ -1,6 +1,6 @@
 #pragma once
 #include "IComponent.h"
-#include "DataTypes.h"
+#include "MyEngineTypes.h"
 #include <Jolt/Jolt.h>
 #include <Jolt/Physics/Body/BodyID.h>
 

@@ -1,14 +1,14 @@
 #include <iostream>
-#include <cassert>
+#include <fstream>
 #include "raylib-cpp.hpp"
 #include "rlgl.h"
 #include "PhysicsManager.h"
-#include "ExampleComponent.h"
+#include "ControllerComponent.h"
 #include "PhysicsComponent.h"
 #include "ModelComponent.h"
 #include "Scene.h"
+#include "JSONParsing.h"
 
-#include "nlohmann/json.hpp"
 #include <Jolt.h>
 
 int main()
@@ -31,7 +31,17 @@ int main()
     cam.fovy = 45.0f;
     cam.projection = CAMERA_PERSPECTIVE;
 
-    auto obj1 = GameObject::Create();
+    std::string path = "Assets/Scene.json";
+    std::ifstream f(path);
+
+    if (!f) { std::cerr << "Error: Failed to open file: " << path << std::endl; }
+    else 
+    {
+        nlohmann::json data = nlohmann::json::parse(f);
+        JSONParsing::GenerateSceneFromJSON(data);
+    }
+
+    /*auto obj1 = GameObject::Create();
     auto obj2 = GameObject::Create(obj1);
 
     std::shared_ptr<raylib::Model> monkey = make_shared<raylib::Model>("Assets/Monkey.obj");
@@ -54,13 +64,13 @@ int main()
     obj2->GetTransform().Scale(MyEngine::Vec3(5.0f, 1.0f, 5.0f));
     obj1->GetTransform().Rotate(MyEngine::Quat::FromEuler(0.0f, 180.0f, 0.0f));
 
-    (void)IComponent::Create<ExampleComponent>(*obj1);
+    (void)IComponent::Create<ControllerComponent>(*obj1);
 
     (void)ModelComponent::Create(*obj1, monkey, true);
-    (void)ModelComponent::Create(*obj2, MyEngine::DefaultShapes::Box);
+    (void)ModelComponent::Create(*obj2, MyEngine::DefaultModelShapes::Box);
 
     auto p1 = PhysicsComponent::Create(*obj1, config1);
-    (void)PhysicsComponent::Create(*obj2, config2);
+    (void)PhysicsComponent::Create(*obj2, config2);*/
 
     Scene& scene = Scene::GetActive();
     scene.Start();

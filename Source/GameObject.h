@@ -7,7 +7,7 @@
 #include "IComponent.h"
 #include "PhysicsComponent.h"
 #include "Scene.h"
-#include "DataTypes.h"
+#include "MyEngineTypes.h"
 
 class IComponent; //Forward declaration to avoid circular dependancy
 class PhysicsComponent;

@@ -1,7 +1,7 @@
 #pragma once
 #include "IComponent.h"
 #include "raylib-cpp.hpp"
-#include "DataTypes.h"
+#include "MyEngineTypes.h"
 
 class GameObject;
 
@@ -13,7 +13,7 @@ private:
 public:
 	ModelComponent(GameObject& gM, std::shared_ptr<raylib::Model> _model, bool interp);
 
-	static std::shared_ptr<ModelComponent> Create(GameObject& gM, MyEngine::DefaultShapes shape, bool interp = false);
+	static std::shared_ptr<ModelComponent> Create(GameObject& gM, MyEngine::DefaultModelShapes shape, bool interp = false);
 	static std::shared_ptr<ModelComponent> Create(GameObject& gM, std::shared_ptr<raylib::Model> _model, bool interp = false);
 
 	void Initialize() override;

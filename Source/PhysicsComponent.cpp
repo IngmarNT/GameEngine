@@ -11,6 +11,8 @@
 
 PhysicsComponent::PhysicsComponent(GameObject& gM, const MyEngine::PhysicsBodyConfig& config) : IComponent(gM) 
 {
+	this->previousPosition = MyEngine::Vec3();
+	this->previousRotation = MyEngine::Quat::Identity();
 	this->bodyConfig = config;
 }
 
@@ -37,7 +39,7 @@ void PhysicsComponent::Start()
 	switch (bodyConfig.shapeType) 
 	{
 	case MyEngine::PhysicsShapeType::Box:
-		shape = new JPH::BoxShape(bodyConfig.dimensions);
+		shape = new JPH::BoxShape(bodyConfig.scale);
 		break;
 	case MyEngine::PhysicsShapeType::Sphere:
 		shape = new JPH::SphereShape(bodyConfig.radius);
@@ -51,7 +53,7 @@ void PhysicsComponent::Start()
 
 		for (const auto& v : bodyConfig.meshVertices)
 		{
-			pointCloud.push_back(JPH::Vec3(v.x, v.y, v.z));
+			pointCloud.push_back(JPH::Vec3(v.x * bodyConfig.scale.GetX(), v.y * bodyConfig.scale.GetY(), v.z * bodyConfig.scale.GetZ()));
 		}
 
 		JPH::ConvexHullShapeSettings settings(pointCloud);

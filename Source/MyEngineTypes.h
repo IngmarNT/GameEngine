@@ -3,6 +3,8 @@
 #include "raymath.h"
 #include "JoltSetup.h"
 #include <cmath>
+#include <iostream>
+#include <memory>
 
 namespace MyEngine {
 
@@ -50,6 +52,7 @@ namespace MyEngine {
 		Vec3(const Vector3& v) : x(v.x), y(v.y), z(v.z) {}
 
 		operator Vector3() const { return { x, y, z }; }
+		operator JPH::Vec3() const { return JPH::Vec3(x, y, z); }
 
 		Vec3 operator+(const Vec3& other) const { return Vec3(x + other.x, y + other.y, z + other.z); }
 		Vec3 operator-(const Vec3& other) const { return Vec3(x - other.x, y - other.y, z - other.z); }
@@ -153,6 +156,11 @@ namespace MyEngine {
 			return Quat(QuaternionFromEuler(pitch * DEG2RAD, yaw * DEG2RAD, roll * DEG2RAD));
 		}
 
+		static Quat FromEuler(Vec3 eulerAngles)
+		{
+			return Quat(QuaternionFromEuler(eulerAngles.x * DEG2RAD, eulerAngles.y * DEG2RAD, eulerAngles.z * DEG2RAD));
+		}
+
 		static Quat Lerp(Quat q1, Quat q2, float amount) { return Quat(QuaternionLerp(q1.data, q2.data, amount)); }
 		static Quat Slerp(Quat q1, Quat q2, float amount) { return Quat(QuaternionSlerp(q1.data, q2.data, amount)); }
 
@@ -216,7 +224,7 @@ namespace MyEngine {
 		PhysicsShapeType shapeType = PhysicsShapeType::Box;
 		JPH::EActivation activationType = JPH::EActivation::Activate;
 		JPH::ObjectLayer layer = Layers::MOVING;
-		JPH::Vec3 dimensions = JPH::Vec3(1.0f, 1.0f, 1.0f);
+		JPH::Vec3 scale = JPH::Vec3(1.0f, 1.0f, 1.0f);
 		std::vector<Vec3> meshVertices;
 		float radius = 1.0f; // used for spheres, capsules
 		float height = 2.0f; // used for capsules
@@ -228,7 +236,7 @@ namespace MyEngine {
 		JPH::EAllowedDOFs dof = JPH::EAllowedDOFs::All;
 	};
 
-	enum class DefaultShapes 
+	enum class DefaultModelShapes 
 	{
 		Box,
 		Sphere,
@@ -258,5 +266,28 @@ namespace MyEngine {
 		}
 
 		return points;
+	}
+
+	static void ScaleModel(Model& model, const Vec3& scalar) 
+	{
+		if (scalar != MyEngine::Vec3(0, 0, 0))
+		{
+			for (int i = 0; i < model.meshCount; ++i) {
+				Mesh& mesh = model.meshes[i];
+
+				if (mesh.vertexCount == 0 || mesh.vertices == nullptr) continue;
+
+				float* vertices = mesh.vertices;
+
+				for (int v = 0; v < mesh.vertexCount; ++v) {
+
+					vertices[v * 3 + 0] *= scalar.x; //x
+					vertices[v * 3 + 1] *= scalar.y; //y
+					vertices[v * 3 + 2] *= scalar.z; //z
+				}
+
+				UpdateMeshBuffer(mesh, 0, vertices, mesh.vertexCount * 3 * sizeof(float), 0);
+			}
+		}
 	}
 }

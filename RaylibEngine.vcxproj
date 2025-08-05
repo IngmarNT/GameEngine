@@ -113,7 +113,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)external\JoltPhysics\Build\build\Debug;$(ProjectDir)external\raylib\build\raylib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Jolt.lib;raylib.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Jolt.lib;raylib.lib;winmm.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -130,29 +130,32 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Jolt.lib;raylib.lib;winmm.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="Scene.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Source\DataTypes.h" />
-    <ClInclude Include="Source\ExampleComponent.h" />
+    <ClInclude Include="Source\MyEngineTypes.h" />
+    <ClInclude Include="Source\ControllerComponent.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\IComponent.h" />
+    <ClInclude Include="Source\JoltSetup.h" />
+    <ClInclude Include="Source\JSONParsing.h" />
     <ClInclude Include="Source\ModelComponent.h" />
     <ClInclude Include="Source\PhysicsComponent.h" />
     <ClInclude Include="Source\PhysicsManager.h" />
     <ClInclude Include="Source\Scene.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\ExampleComponent.cpp" />
+    <ClCompile Include="Source\ControllerComponent.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\ModelComponent.cpp" />
     <ClCompile Include="Source\PhysicsComponent.cpp" />
     <ClCompile Include="Source\PhysicsManager.cpp" />
     <ClCompile Include="Source\Program.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Scene.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
