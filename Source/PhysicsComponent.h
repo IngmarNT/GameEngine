@@ -27,6 +27,7 @@ public:
 	void FixedUpdate() override;
 	void Update2D() override;
 	void Update3D() override;
+	void Destroy() override;
 	
 	void SyncToTransform();
 	void SyncFromTransform();

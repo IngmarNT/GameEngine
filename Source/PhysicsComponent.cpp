@@ -122,5 +122,10 @@ void PhysicsComponent::SyncFromTransform()
 	transform.rotation = MyEngine::Quat(rot.GetX(), rot.GetY(), rot.GetZ(), rot.GetW());
 }
 
+void PhysicsComponent::Destroy() 
+{
+	this->gameObject.RemoveComponent(shared_from_this());
+}
+
 void PhysicsComponent::Update2D() {}
 void PhysicsComponent::Update3D() {}

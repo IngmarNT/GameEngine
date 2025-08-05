@@ -17,6 +17,7 @@ public:
 	virtual void Update2D() = 0;
 	virtual void Update3D() = 0;
 	virtual void FixedUpdate() = 0;
+	virtual void Destroy() = 0;
 
 	template<typename T>
 	static std::shared_ptr<T> Create(GameObject& gM) 

@@ -39,6 +39,15 @@ void Scene::Update3D()
 	}
 }
 
+void Scene::Close() 
+{
+	for (size_t i = sceneObjects.size(); i > 0; i--) 
+	{
+		std::cout << "Destroying Object: " << sceneObjects[0]->GetName() << std::endl;
+		sceneObjects[0]->Destroy();
+	}
+}
+
 void Scene::FixedUpdate()
 {
 	const float physicsStep = 1.0f / 60.0f;
@@ -73,6 +82,19 @@ void Scene::FixedUpdate()
 			physics->SyncFromTransform();
 		}
 	}
+}
+
+std::shared_ptr<GameObject> Scene::FindObject(std::string name) 
+{
+	for (auto obj : sceneObjects) 
+	{
+		if (obj->GetName() == name) 
+		{
+			return obj;
+		}
+	}
+
+	return nullptr;
 }
 
 bool Scene::CheckInScene(std::shared_ptr<GameObject> obj) 

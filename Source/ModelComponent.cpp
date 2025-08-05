@@ -68,6 +68,14 @@ void ModelComponent::Update3D()
 	rlPopMatrix();
 }
 
+void ModelComponent::Destroy() 
+{
+	model->Unload();
+	model.reset();
+
+	this->gameObject.RemoveComponent(shared_from_this());
+}
+
 void ModelComponent::Start() {}
 void ModelComponent::FixedUpdate() {}
 void ModelComponent::Update2D() {}

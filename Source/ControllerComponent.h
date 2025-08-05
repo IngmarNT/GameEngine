@@ -16,4 +16,5 @@ public:
 	void Update2D() override;
 	void Update3D() override;
 	void FixedUpdate() override;
+	void Destroy() override;
 };

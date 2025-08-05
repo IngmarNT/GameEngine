@@ -149,6 +149,11 @@ void GameObject::Destroy(bool destroyTree)
 		destroyTree ? c->Destroy(true) : (void)c->RemoveParent();
 	}
 
+	for (size_t i = components.size(); i > 0; i--) 
+	{
+		components[0]->Destroy();
+	}
+
 	this->RemoveParent();
 	Scene::GetActive().RemoveObject(shared_from_this());
 }

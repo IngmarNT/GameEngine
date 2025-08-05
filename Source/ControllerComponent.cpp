@@ -88,3 +88,8 @@ void ControllerComponent::Update3D()
 		cam.SetTarget(newTarget);
 	}
 }
+
+void ControllerComponent::Destroy() 
+{
+	this->gameObject.RemoveComponent(shared_from_this());
+}

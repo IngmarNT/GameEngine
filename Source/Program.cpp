@@ -55,12 +55,10 @@ int main()
 
         window.ClearBackground(raylib::RAYWHITE);
 
+        if (IsKeyPressed(KEY_Q)) { scene.Close(); }
+
         cam.BeginMode();
-
-            scene.Update3D();
-
-            //DrawGrid(10, 1.0f);
-            
+        scene.Update3D();
         cam.EndMode();
 
         scene.Update2D();
@@ -68,7 +66,8 @@ int main()
         EndDrawing();
     }
 
-    PhysicsManager::Get().Shutdown();
+    scene.Close();
+    physics.Shutdown();
 
     return 0;
 }
