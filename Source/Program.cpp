@@ -43,16 +43,34 @@ int main()
 
     SetTargetFPS(144);
 
+    CameraComponent* camComp = CameraComponent::GetActive();
+
     // APPLICATION LOOP //
     while (!window.ShouldClose()) 
     {
-        static CameraComponent* camComp = CameraComponent::GetActive();
-
         scene.FixedUpdate();
 
         BeginDrawing();
 
         window.ClearBackground(raylib::RAYWHITE);
+
+        if (IsKeyPressed(KEY_Q)) 
+        {
+            scene.Close();
+            camComp = nullptr;
+        }
+
+        if (IsKeyPressed(KEY_E)) 
+        {
+            f.open(path);
+            nlohmann::json data = nlohmann::json::parse(f);
+            f.close();
+
+            if (scene.Open(data)) scene.Start();
+            else { std::cerr << "Error: " << path << " could not be opened as a Scene" << std::endl; }
+
+            camComp = CameraComponent::GetActive();
+        }
 
         if (camComp != nullptr) {
             raylib::Camera& cam = camComp->GetCamera();
@@ -66,6 +84,8 @@ int main()
 
         EndDrawing();
     }
+
+    camComp = nullptr;
 
     scene.Close();
     physics.Shutdown();

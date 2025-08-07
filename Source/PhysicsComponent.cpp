@@ -124,6 +124,7 @@ void PhysicsComponent::SyncFromTransform()
 
 void PhysicsComponent::Destroy() 
 {
+	PhysicsManager::Get().GetSystem().GetBodyInterface().RemoveBody(bodyID);
 	this->gameObject.RemoveComponent(shared_from_this());
 }
 

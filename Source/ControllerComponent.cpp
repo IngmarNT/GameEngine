@@ -5,7 +5,7 @@
 #include <iostream>
 #include <cmath>
 
-ControllerComponent::ControllerComponent(GameObject& gM) : IComponent(gM) {}
+ControllerComponent::ControllerComponent(GameObject& gM) : transform(gM.GetTransform()), IComponent(gM) {}
 
 void ControllerComponent::Initialize() 
 {
@@ -20,6 +20,7 @@ void ControllerComponent::Start()
 		jumpQueued = false;
 		move = MyEngine::Vec3();
 	}
+	camera = CameraComponent::GetActive();
 }
 
 void ControllerComponent::FixedUpdate() 
@@ -48,9 +49,6 @@ void ControllerComponent::Update2D()
 
 void ControllerComponent::Update3D() 
 {
-	static CameraComponent* camComp = CameraComponent::GetActive();
-	static MyEngine::GameTransform& t = gameObject.GetTransform();
-
 	float epsilon = 0.001f;
 	float moveSpeed = 20.0f;
 
@@ -77,17 +75,17 @@ void ControllerComponent::Update3D()
 	float deltaTime = GetFrameTime();
 	float alpha = Scene::GetActive().GetPhysicsAlpha();
 
-	MyEngine::Vec3 interpPos = t.GetInterpolatedPosition(alpha);
+	MyEngine::Vec3 interpPos = transform.GetInterpolatedPosition(alpha);
 
-	if (camComp == nullptr) return;
+	if (camera == nullptr) return;
 
-	raylib::Camera& cam = camComp->GetCamera();
+	raylib::Camera& cam = camera->GetCamera();
 	if (MyEngine::Vec3(cam.target) != interpPos) {
 		MyEngine::Vec3 newTarget = MyEngine::Vec3::Lerp(cam.target, interpPos, 10 * deltaTime);
 
 		if ((MyEngine::Vec3(cam.target) - newTarget).Magnitude() <= epsilon) newTarget = interpPos;
 
-		camComp->SetTarget(newTarget);
+		camera->SetTarget(newTarget);
 	}
 }
 
