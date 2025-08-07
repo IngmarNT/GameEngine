@@ -2,21 +2,21 @@
 #include "GameObject.h"
 #include "MyEngineTypes.h"
 
-ModelComponent::ModelComponent(GameObject& gM, std::shared_ptr<raylib::Model> _model, bool interp) : 
-	doInterpolation(interp), model(_model), IComponent(gM) {}
+ModelComponent::ModelComponent(GameObject& gM, std::shared_ptr<raylib::Model> _model, bool wires, bool interp) : 
+	doInterpolation(interp), drawWires(wires), model(_model), IComponent(gM) { }
 
-std::shared_ptr<ModelComponent> ModelComponent::Create(GameObject& gM, std::shared_ptr<raylib::Model> _model, bool interp)
+std::shared_ptr<ModelComponent> ModelComponent::Create(GameObject& gM, std::shared_ptr<raylib::Model> _model, bool wires, bool interp)
 {
 	MyEngine::GameTransform& t = gM.GetTransform();
 
 	MyEngine::ScaleModel(*_model, MyEngine::Vec3(0.5f, 0.5f, 0.5f));
 
-	auto obj = std::make_shared<ModelComponent>(gM, _model, interp);
+	auto obj = std::make_shared<ModelComponent>(gM, _model, wires, interp);
 	obj->Initialize();
 	return obj;
 }
 
-std::shared_ptr<ModelComponent> ModelComponent::Create(GameObject& gM, MyEngine::DefaultModelShapes shape, bool interp)
+std::shared_ptr<ModelComponent> ModelComponent::Create(GameObject& gM, MyEngine::DefaultModelShapes shape, bool wires, bool interp)
 {
 	auto m = make_shared<raylib::Model>();
 	MyEngine::GameTransform& t = gM.GetTransform();
@@ -37,7 +37,7 @@ std::shared_ptr<ModelComponent> ModelComponent::Create(GameObject& gM, MyEngine:
 		break;
 	}
 
-	auto obj = std::make_shared<ModelComponent>(gM, m, interp);
+	auto obj = std::make_shared<ModelComponent>(gM, m, wires, interp);
 	obj->Initialize();
 	return obj;
 }
@@ -63,8 +63,8 @@ void ModelComponent::Update3D()
 		rlMultMatrixf((float*)&mat);
 		rlScalef(transform.scale.x * 2.0f, transform.scale.y * 2.0f, transform.scale.z * 2.0f);
 
-		model->Draw(Vector3(), 1.0f, raylib::RED);
-		model->DrawWires(Vector3(), 1.0f, raylib::DARKGRAY);
+		model->Draw(Vector3(), 1.0f, raylib::WHITE);
+		if (drawWires) model->DrawWires(Vector3(), 1.0f, raylib::DARKGRAY);
 	rlPopMatrix();
 }
 
@@ -78,4 +78,5 @@ void ModelComponent::Destroy()
 
 void ModelComponent::Start() {}
 void ModelComponent::FixedUpdate() {}
+
 void ModelComponent::Update2D() {}

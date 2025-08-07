@@ -86,28 +86,37 @@ namespace JSONParsing
 	static void GenerateSceneFromJSON(const nlohmann::json sceneData) 
 	{
 		std::map<std::string, std::shared_ptr<GameObject>> objects;
+		std::map<std::string, int> nameIndices;
 
 		for (const auto& objData : sceneData["objects"]) 
 		{
-			std::cout << "reached [objects]" << std::endl;
+			std::cout << "got [objects]" << std::endl;
 			auto obj = GameObject::Create();
 
 			if (objData.contains("name")) 
 			{
-				std::cout << "reached [name]" << std::endl;
+				std::cout << "setting [name]" << std::endl;
 				std::string name = objData["name"];
 
-				if (objects.find(name) != objects.end()) continue;
+				if (nameIndices[name] > 0) 
+				{
+					std::string newName = name + " (" + std::to_string(nameIndices[name]) + ")";
+
+					obj->SetName(newName);
+					objects.emplace(newName, obj);
+				}
 				else 
 				{ 
 					obj->SetName(objData["name"]);
-					objects.emplace(objData["name"], obj); 
+					objects.emplace(objData["name"], obj);
 				}
+
+				nameIndices[name] += 1;
 			}
 
 			if (objData.contains("parent")) 
 			{
-				std::cout << "reached [parent]" << std::endl;
+				std::cout << "setting [parent]" << std::endl;
 				if (objData["parent"] != nullptr) 
 				{
 					if (objects.find(objData["parent"]) != objects.end())
@@ -119,7 +128,7 @@ namespace JSONParsing
 
 			if (objData.contains("transform")) 
 			{
-				std::cout << "reached [transform]" << std::endl;
+				std::cout << "making [transform]" << std::endl;
 				const auto& t = objData["transform"];
 				if (t.contains("position")) obj->GetTransform().position = Vec3FromJSON(t["position"]);
 				if (t.contains("rotation")) obj->GetTransform().rotation = MyEngine::Quat::FromEuler(Vec3FromJSON(t["rotation"]));
@@ -130,13 +139,12 @@ namespace JSONParsing
 
 			if (comps.contains("Camera"))
 			{
-				std::cout << "reached [Camera]" << std::endl;
+				std::cout << "making component [Camera]" << std::endl;
 				auto c = IComponent::Create<CameraComponent>(*obj);
 
 				if (comps["Camera"].contains("target")) 
 				{
 					c->SetTarget(Vec3FromJSON(comps["Camera"]["target"]));
-					std::cout << "set sumn" << std::endl;
 				}
 				else 
 				{
@@ -152,7 +160,7 @@ namespace JSONParsing
 
 			if (comps.contains("Physics")) 
 			{
-				std::cout << "reached [Physics]" << std::endl;
+				std::cout << "making component [Physics]" << std::endl;
 				const auto& p = comps["Physics"];
 				MyEngine::PhysicsBodyConfig config;
 
@@ -177,22 +185,35 @@ namespace JSONParsing
 
 			if (comps.contains("Model")) 
 			{
-				std::cout << "reached [Model]" << std::endl;
+				std::cout << "making component [Model]" << std::endl;
 				if (comps["Model"].contains("path")) 
 				{
+					bool drawWires = true;
 					std::shared_ptr<raylib::Model> model = make_shared<raylib::Model>(comps["Model"]["path"]);
-					ModelComponent::Create(*obj, model, true);
+
+					if (comps["Model"].contains("texture")) 
+					{
+						drawWires = false;
+						raylib::Image image(comps["Model"]["texture"]);
+						Texture2D tex = LoadTextureFromImage(image);
+
+						model->materials[0].shader = LoadShader(0, 0);
+						model->materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = tex;
+						image.Unload();
+					}
+
+					ModelComponent::Create(*obj, model, drawWires, true);
 				}
 				else if (comps["Model"].contains("shape")) 
 				{
 					MyEngine::DefaultModelShapes s = ModelShapeFromJSON(comps["Model"]["shape"]);
-					ModelComponent::Create(*obj, s, true);
+					ModelComponent::Create(*obj, s, true, true);
 				}
 			}
 
 			if (comps.contains("Controller")) 
 			{
-				std::cout << "reached [Controller]" << std::endl;
+				std::cout << "making component [Controller]" << std::endl;
 				IComponent::Create<ControllerComponent>(*obj);
 			}
 		}

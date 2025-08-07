@@ -2,6 +2,7 @@
 #include "PhysicsManager.h"
 #include "JSONParsing.h"
 #include <iostream>
+#include <fstream>
 
 Scene::Scene() {}
 
@@ -45,6 +46,28 @@ bool Scene::Open(nlohmann::json data)
 	return false;
 }
 
+bool Scene::Open(std::string path) 
+{
+	std::ifstream f(path);
+	if (!f) { 
+		std::cerr << "Error: Failed to open file: " << path << std::endl;
+		f.close();
+	}
+	else
+	{
+		nlohmann::json data = nlohmann::json::parse(f);
+		f.close();
+
+		if (Open(data)) 
+		{ 
+			Start();
+			return true;
+		}
+		else { std::cerr << "Error: " << path << " could not be opened as a Scene" << std::endl; }
+	}
+	return false;
+}
+
 void Scene::Close() 
 {
 	for (size_t i = sceneObjects.size(); i > 0; i--) 
@@ -52,6 +75,7 @@ void Scene::Close()
 		std::cout << "Destroying Object: " << sceneObjects[0]->GetName() << std::endl;
 		sceneObjects[0]->Destroy();
 	}
+	std::cout << "Scene closed." << std::endl;
 }
 
 void Scene::FixedUpdate()

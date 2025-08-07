@@ -27,19 +27,10 @@ int main()
     raylib::Window window(screenWidth, screenHeight, "engine-cpp");
 
     std::string path = "Assets/Scene.json";
-    std::ifstream f(path);
 
     Scene& scene = Scene::GetActive();
 
-    if (!f) { std::cerr << "Error: Failed to open file: " << path << std::endl; }
-    else 
-    {
-        nlohmann::json data = nlohmann::json::parse(f);
-        f.close();
-
-        if (scene.Open(data)) scene.Start();
-        else { std::cerr << "Error: " << path << " could not be opened as a Scene" << std::endl; }
-    }
+    bool sceneOpen = scene.Open(path);
 
     SetTargetFPS(144);
 
@@ -54,20 +45,18 @@ int main()
 
         window.ClearBackground(raylib::RAYWHITE);
 
-        if (IsKeyPressed(KEY_Q)) 
+        if (IsKeyPressed(KEY_Q) && sceneOpen == true) 
         {
+            std::cout << "Closing scene..." << std::endl;
             scene.Close();
+            sceneOpen = false;
             camComp = nullptr;
         }
 
-        if (IsKeyPressed(KEY_E)) 
+        if (IsKeyPressed(KEY_E) && sceneOpen == false) 
         {
-            f.open(path);
-            nlohmann::json data = nlohmann::json::parse(f);
-            f.close();
-
-            if (scene.Open(data)) scene.Start();
-            else { std::cerr << "Error: " << path << " could not be opened as a Scene" << std::endl; }
+            std::cout << "Opening scene from: " << path << std::endl;
+            sceneOpen = scene.Open(path);
 
             camComp = CameraComponent::GetActive();
         }
@@ -81,6 +70,8 @@ int main()
 
             scene.Update2D();
         }
+
+        DrawFPS(10, 10);
 
         EndDrawing();
     }

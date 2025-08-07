@@ -20,6 +20,7 @@ public:
 	static Scene& GetActive();
 
 	bool Open(nlohmann::json data);
+	bool Open(std::string path);
 	void Start();
 	void Update2D();
 	void Update3D();

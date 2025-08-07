@@ -38,7 +38,7 @@ void GameObject::Update3D()
 {
 	for (auto component : this->components)
 	{
-		component->Update3D();
+		component->Update3D(); 
 	}
 }
 
@@ -51,13 +51,10 @@ void GameObject::FixedUpdate()
 }
 
 std::string GameObject::GetName() { return this->name; }
-
 GameTransform& GameObject::GetTransform() { return this->transform; }
-
 std::weak_ptr<GameObject> GameObject::GetParent() { return this->parent; }
 
 void GameObject::SetName(std::string _name) { this->name = _name; }
-
 bool GameObject::SetParent(std::shared_ptr<GameObject> newParent)
 {
 	if (newParent.get() == this) return false;
@@ -73,7 +70,6 @@ bool GameObject::SetParent(std::shared_ptr<GameObject> newParent)
 
 	return true;
 }
-
 
 bool GameObject::RemoveParent() 
 {
