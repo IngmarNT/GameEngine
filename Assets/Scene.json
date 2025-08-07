@@ -16,7 +16,8 @@
           "scale": [ 1.0, 1.0, 1.0 ]
         },
         "Model": {
-          "path": "Assets/Monkey.obj"
+          "path": "Assets/Monkey.obj",
+          "color": [ 0, 255, 255, 255 ]
         },
         "Controller": {}
       }
@@ -38,7 +39,8 @@
         },
         "Model": {
           "path": "Assets/mi8.obj",
-          "texture": "Assets/mi8texture.png"
+          "texture": "Assets/mi8texture.png",
+          "color": [ 255, 255, 255, 255 ]
         }
       }
     },
@@ -58,7 +60,8 @@
           "scale": [ 5, 1, 5 ]
         },
         "Model": {
-          "shape": "Box"
+          "shape": "Box",
+          "color": [ 200, 0, 255, 255 ]
         }
       }
     },

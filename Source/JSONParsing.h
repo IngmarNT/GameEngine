@@ -14,6 +14,11 @@ namespace JSONParsing
 		return MyEngine::Vec3(arr[0], arr[1], arr[2]);
 	}
 
+	static MyEngine::Vec4 Vec4FromJSON(const std::vector<float>& arr)
+	{
+		return MyEngine::Vec4(arr[0], arr[1], arr[2], arr[3]);
+	}
+
 	static JPH::EAllowedDOFs DOFFromJSON(const std::vector<string>& arr) 
 	{	
 		JPH::EAllowedDOFs dof = JPH::EAllowedDOFs::None;
@@ -185,6 +190,7 @@ namespace JSONParsing
 
 			if (comps.contains("Model")) 
 			{
+				std::shared_ptr<ModelComponent> m;
 				std::cout << "making component [Model]" << std::endl;
 				if (comps["Model"].contains("path")) 
 				{
@@ -202,12 +208,17 @@ namespace JSONParsing
 						image.Unload();
 					}
 
-					ModelComponent::Create(*obj, model, drawWires, true);
+					m = ModelComponent::Create(*obj, model, drawWires, true);
 				}
 				else if (comps["Model"].contains("shape")) 
 				{
 					MyEngine::DefaultModelShapes s = ModelShapeFromJSON(comps["Model"]["shape"]);
-					ModelComponent::Create(*obj, s, true, true);
+					m = ModelComponent::Create(*obj, s, true, true);
+				}
+
+				if (m != nullptr && comps["Model"].contains("color"))
+				{
+					m->SetTint(Vec4FromJSON(comps["Model"]["color"]).ToColor());
 				}
 			}
 

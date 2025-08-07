@@ -106,6 +106,16 @@ namespace MyEngine {
 		Vec4(const Vector4& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
 
 		operator Vector4() const { return { x, y, z, w }; }
+		Color ToColor() const 
+		{ 
+			unsigned char x1, y1, z1, w1;
+			x1 = static_cast<unsigned char>(std::clamp(x, 0.0f, 255.0f));
+			y1 = static_cast<unsigned char>(std::clamp(y, 0.0f, 255.0f));
+			z1 = static_cast<unsigned char>(std::clamp(z, 0.0f, 255.0f));
+			w1 = static_cast<unsigned char>(std::clamp(w, 0.0f, 255.0f));
+
+			return { x1, y1, z1, w1 }; 
+		}
 
 		Vec4 operator+(const Vec4& other) const { return Vec4(x + other.x, y + other.y, z + other.z, w + other.w); }
 		Vec4 operator-(const Vec4& other) const { return Vec4(x - other.x, y - other.y, z - other.z, w - other.w); }

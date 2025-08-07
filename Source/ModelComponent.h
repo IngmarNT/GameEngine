@@ -17,6 +17,8 @@ public:
 	static std::shared_ptr<ModelComponent> Create(GameObject& gM, MyEngine::DefaultModelShapes shape, bool wires = false, bool interp = false);
 	static std::shared_ptr<ModelComponent> Create(GameObject& gM, std::shared_ptr<raylib::Model> _model, bool wires = false, bool interp = false);
 
+	void SetTint(raylib::Color tint);
+
 	void Initialize() override;
 	void Start() override;
 	void FixedUpdate() override;

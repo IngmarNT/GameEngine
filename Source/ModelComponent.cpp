@@ -63,7 +63,7 @@ void ModelComponent::Update3D()
 		rlMultMatrixf((float*)&mat);
 		rlScalef(transform.scale.x * 2.0f, transform.scale.y * 2.0f, transform.scale.z * 2.0f);
 
-		model->Draw(Vector3(), 1.0f, raylib::WHITE);
+		model->Draw(Vector3(), 1.0f, model->materials[0].maps[MATERIAL_MAP_DIFFUSE].color);
 		if (drawWires) model->DrawWires(Vector3(), 1.0f, raylib::DARKGRAY);
 	rlPopMatrix();
 }
@@ -76,7 +76,11 @@ void ModelComponent::Destroy()
 	this->gameObject.RemoveComponent(shared_from_this());
 }
 
+void ModelComponent::SetTint(raylib::Color tint) 
+{
+	model->materials[0].maps[MATERIAL_MAP_DIFFUSE].color = tint;
+}
+
 void ModelComponent::Start() {}
 void ModelComponent::FixedUpdate() {}
-
 void ModelComponent::Update2D() {}
