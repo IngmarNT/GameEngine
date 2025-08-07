@@ -52,6 +52,15 @@ namespace JSONParsing
 		return Layers::NON_MOVING;
 	}
 
+	static CameraProjection ProjectionFromJSON(const std::string str)
+	{
+		if (str == "PERSPECTIVE") return CameraProjection::CAMERA_PERSPECTIVE;
+		else if (str == "ORTHOGRAPHIC") return CameraProjection::CAMERA_ORTHOGRAPHIC;
+
+		std::cerr << "Warning: '" << str << "' is not valid CameraProjection, defaulting to PERSPECTIVE" << std::endl;
+		return CameraProjection::CAMERA_PERSPECTIVE;
+	}
+
 	static MyEngine::PhysicsShapeType PhysicsShapeTypeFromJSON(const std::string str) 
 	{
 		if (str == "Box") return MyEngine::PhysicsShapeType::Box;
@@ -122,7 +131,23 @@ namespace JSONParsing
 			if (comps.contains("Camera"))
 			{
 				std::cout << "reached [Camera]" << std::endl;
-				IComponent::Create<CameraComponent>(*obj);
+				auto c = IComponent::Create<CameraComponent>(*obj);
+
+				if (comps["Camera"].contains("target")) 
+				{
+					c->SetTarget(Vec3FromJSON(comps["Camera"]["target"]));
+					std::cout << "set sumn" << std::endl;
+				}
+				else 
+				{
+					c->SetRotation(obj->GetTransform().rotation);
+				}
+
+				raylib::Camera& cam = c->GetCamera();
+
+				if (comps["Camera"].contains("up")) cam.up = Vec3FromJSON(comps["Camera"]["up"]);
+				if (comps["Camera"].contains("fovy")) cam.fovy = comps["Camera"]["fovy"];
+				if (comps["Camera"].contains("projection")) cam.projection = ProjectionFromJSON(comps["Camera"]["projection"]);
 			}
 
 			if (comps.contains("Physics")) 
@@ -131,7 +156,7 @@ namespace JSONParsing
 				const auto& p = comps["Physics"];
 				MyEngine::PhysicsBodyConfig config;
 
-				if (p.contains("shape")) 
+				if (p.contains("shape"))
 				{ 
 					config.shapeType = PhysicsShapeTypeFromJSON(p["shape"]); 
 					if (config.shapeType == MyEngine::PhysicsShapeType::Custom && p.contains("path")) 

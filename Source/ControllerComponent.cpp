@@ -43,8 +43,7 @@ void ControllerComponent::FixedUpdate()
 
 void ControllerComponent::Update2D() 
 {
-	DrawText("Game Engine!", 10, 10, 40, BLACK);
-	DrawFPS(GetScreenWidth() - 100, 10);
+
 }
 
 void ControllerComponent::Update3D() 

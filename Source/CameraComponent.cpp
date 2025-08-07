@@ -25,6 +25,7 @@ void CameraComponent::SetAsActive()
 void CameraComponent::Initialize() 
 {
 	this->gameObject.AddComponent(shared_from_this());
+	SetPosition(gameObject.GetTransform().position);
 
 	if (activeCamera == nullptr)
 	{

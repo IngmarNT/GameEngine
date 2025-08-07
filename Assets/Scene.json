@@ -90,7 +90,12 @@
         "scale": [ 5, 1, 5 ]
       },
       "components": {
-        "Camera": {}
+        "Camera": {
+          "target": [ 0, 0, 0 ],
+          "up": [ 0, 1, 0 ],
+          "fovy": 45,
+          "projection": "PERSPECTIVE"
+        }
       }
     }
   ]

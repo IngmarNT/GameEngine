@@ -41,31 +41,22 @@ int main()
         else { std::cerr << "Error: " << path << " could not be opened as a Scene" << std::endl; }
     }
 
-    CameraComponent* camComp = CameraComponent::GetActive();
-    if (camComp != nullptr) {
-        raylib::Camera& cam = camComp->GetCamera();
-        cam.position = { 0.0f, 10.0f, -10.0f };
-        cam.target = { 0.0f, 0.0f, 0.0f };
-        cam.up = { 0.0f, 1.0f, 0.0f };
-        cam.fovy = 45.0f;
-        cam.projection = CameraProjection::CAMERA_PERSPECTIVE;
-    }
-
     SetTargetFPS(144);
 
     // APPLICATION LOOP //
     while (!window.ShouldClose()) 
     {
+        static CameraComponent* camComp = CameraComponent::GetActive();
+
         scene.FixedUpdate();
 
         BeginDrawing();
 
         window.ClearBackground(raylib::RAYWHITE);
 
-        if (IsKeyPressed(KEY_Q)) { scene.Close(); }
-
         if (camComp != nullptr) {
             raylib::Camera& cam = camComp->GetCamera();
+
             cam.BeginMode();
             scene.Update3D();
             cam.EndMode();

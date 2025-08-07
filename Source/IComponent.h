@@ -6,9 +6,9 @@ class GameObject;
 
 class IComponent : public std::enable_shared_from_this<IComponent>
 {
-protected:
-	GameObject& gameObject;
 public:
+	GameObject& gameObject;
+
 	IComponent(GameObject& gM) : gameObject(gM) {}
 	virtual ~IComponent() = default;
 
