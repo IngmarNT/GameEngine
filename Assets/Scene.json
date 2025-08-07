@@ -1,6 +1,26 @@
 {
   "objects": [
     {
+      "name": "GameObject3",
+      "parent": null,
+      "transform": {
+        "position": [ 0, -1, 8 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 3, 1, 3 ]
+      },
+      "components": {
+        "Physics": {
+          "shape": "Box",
+          "motionType": "Static",
+          "layer": "NON_MOVING",
+          "scale": [ 3, 1, 3 ]
+        },
+        "Model": {
+          "shape": "Box"
+        }
+      }
+    },
+    {
       "name": "GameObject1",
       "transform": {
         "position": [ 0, 3, 0 ],
@@ -62,23 +82,15 @@
       }
     },
     {
-      "name": "GameObject3",
-      "parent": "GameObject2",
+      "name": "Camera Object",
+      "parent": null,
       "transform": {
-        "position": [ 0, -1, 8 ],
+        "position": [ 0, 10.0, -10.0 ],
         "rotation": [ 0, 0, 0 ],
-        "scale": [ 3, 1, 3 ]
+        "scale": [ 5, 1, 5 ]
       },
       "components": {
-        "Physics": {
-          "shape": "Box",
-          "motionType": "Static",
-          "layer": "NON_MOVING",
-          "scale": [ 3, 1, 3 ]
-        },
-        "Model": {
-          "shape": "Box"
-        }
+        "Camera": {}
       }
     }
   ]

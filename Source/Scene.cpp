@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "PhysicsManager.h"
+#include "JSONParsing.h"
 #include <iostream>
 
 Scene::Scene() {}
@@ -8,11 +9,6 @@ Scene& Scene::GetActive()
 {
 	static Scene active;
 	return active;
-}
-
-raylib::Camera& Scene::GetCamera() 
-{
-	return this->mainCamera;
 }
 
 void Scene::Start() 
@@ -37,6 +33,16 @@ void Scene::Update3D()
 	{
 		obj->Update3D();
 	}
+}
+
+bool Scene::Open(nlohmann::json data) 
+{
+	if (data.contains("objects")) 
+	{
+		JSONParsing::GenerateSceneFromJSON(data);
+		return true;
+	}
+	return false;
 }
 
 void Scene::Close() 

@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\CameraComponent.h" />
     <ClInclude Include="Source\MyEngineTypes.h" />
     <ClInclude Include="Source\ControllerComponent.h" />
     <ClInclude Include="Source\GameObject.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Source\Scene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\CameraComponent.cpp" />
     <ClCompile Include="Source\ControllerComponent.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\ModelComponent.cpp" />

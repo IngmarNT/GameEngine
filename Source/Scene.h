@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include "GameObject.h"
+#include "nlohmann/json.hpp"
 
 class GameObject;
 
@@ -13,13 +14,12 @@ private:
 	Scene& operator=(const Scene&) = delete;
 
 	std::vector<std::shared_ptr<GameObject>> sceneObjects;
-	raylib::Camera3D mainCamera;
 
 	float physicsAlpha = 0.0f;
 public:
 	static Scene& GetActive();
-	raylib::Camera3D& GetCamera();
 
+	bool Open(nlohmann::json data);
 	void Start();
 	void Update2D();
 	void Update3D();

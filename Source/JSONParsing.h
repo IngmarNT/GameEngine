@@ -3,6 +3,7 @@
 #include "ControllerComponent.h"
 #include "PhysicsComponent.h"
 #include "ModelComponent.h"
+#include "CameraComponent.h"
 #include <map>
 #include <iostream>
 
@@ -118,6 +119,12 @@ namespace JSONParsing
 
 			const auto& comps = objData["components"];
 
+			if (comps.contains("Camera"))
+			{
+				std::cout << "reached [Camera]" << std::endl;
+				IComponent::Create<CameraComponent>(*obj);
+			}
+
 			if (comps.contains("Physics")) 
 			{
 				std::cout << "reached [Physics]" << std::endl;
@@ -160,6 +167,7 @@ namespace JSONParsing
 
 			if (comps.contains("Controller")) 
 			{
+				std::cout << "reached [Controller]" << std::endl;
 				IComponent::Create<ControllerComponent>(*obj);
 			}
 		}

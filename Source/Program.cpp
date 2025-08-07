@@ -4,6 +4,7 @@
 #include "rlgl.h"
 #include "PhysicsManager.h"
 #include "ControllerComponent.h"
+#include "CameraComponent.h"
 #include "PhysicsComponent.h"
 #include "ModelComponent.h"
 #include "Scene.h"
@@ -24,25 +25,31 @@ int main()
     int screenHeight = 720;
 
     raylib::Window window(screenWidth, screenHeight, "engine-cpp");
-    raylib::Camera3D& cam = Scene::GetActive().GetCamera();
-    cam.position = { 0.0f, 10.0f, -10.0f };
-    cam.target = { 0.0f, 0.0f, 0.0f };
-    cam.up = { 0.0f, 1.0f, 0.0f };
-    cam.fovy = 45.0f;
-    cam.projection = CAMERA_PERSPECTIVE;
 
     std::string path = "Assets/Scene.json";
     std::ifstream f(path);
+
+    Scene& scene = Scene::GetActive();
 
     if (!f) { std::cerr << "Error: Failed to open file: " << path << std::endl; }
     else 
     {
         nlohmann::json data = nlohmann::json::parse(f);
-        JSONParsing::GenerateSceneFromJSON(data);
+        f.close();
+
+        if (scene.Open(data)) scene.Start();
+        else { std::cerr << "Error: " << path << " could not be opened as a Scene" << std::endl; }
     }
 
-    Scene& scene = Scene::GetActive();
-    scene.Start();
+    CameraComponent* camComp = CameraComponent::GetActive();
+    if (camComp != nullptr) {
+        raylib::Camera& cam = camComp->GetCamera();
+        cam.position = { 0.0f, 10.0f, -10.0f };
+        cam.target = { 0.0f, 0.0f, 0.0f };
+        cam.up = { 0.0f, 1.0f, 0.0f };
+        cam.fovy = 45.0f;
+        cam.projection = CameraProjection::CAMERA_PERSPECTIVE;
+    }
 
     SetTargetFPS(144);
 
@@ -57,11 +64,14 @@ int main()
 
         if (IsKeyPressed(KEY_Q)) { scene.Close(); }
 
-        cam.BeginMode();
-        scene.Update3D();
-        cam.EndMode();
+        if (camComp != nullptr) {
+            raylib::Camera& cam = camComp->GetCamera();
+            cam.BeginMode();
+            scene.Update3D();
+            cam.EndMode();
 
-        scene.Update2D();
+            scene.Update2D();
+        }
 
         EndDrawing();
     }

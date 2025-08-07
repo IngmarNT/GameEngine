@@ -1,4 +1,5 @@
 #include "ControllerComponent.h"
+#include "CameraComponent.h"
 #include "PhysicsManager.h"
 #include "raylib-cpp.hpp"
 #include <iostream>
@@ -42,13 +43,13 @@ void ControllerComponent::FixedUpdate()
 
 void ControllerComponent::Update2D() 
 {
-	//DrawText("Game Engine!", 10, 10, 40, BLACK);
+	DrawText("Game Engine!", 10, 10, 40, BLACK);
 	DrawFPS(GetScreenWidth() - 100, 10);
 }
 
 void ControllerComponent::Update3D() 
 {
-	static raylib::Camera& cam = Scene::GetActive().GetCamera();
+	static CameraComponent* camComp = CameraComponent::GetActive();
 	static MyEngine::GameTransform& t = gameObject.GetTransform();
 
 	float epsilon = 0.001f;
@@ -79,13 +80,15 @@ void ControllerComponent::Update3D()
 
 	MyEngine::Vec3 interpPos = t.GetInterpolatedPosition(alpha);
 
+	if (camComp == nullptr) return;
+
+	raylib::Camera& cam = camComp->GetCamera();
 	if (MyEngine::Vec3(cam.target) != interpPos) {
 		MyEngine::Vec3 newTarget = MyEngine::Vec3::Lerp(cam.target, interpPos, 10 * deltaTime);
 
-		// if the result of the lerp is sufficiently close to the object position, snap the value
 		if ((MyEngine::Vec3(cam.target) - newTarget).Magnitude() <= epsilon) newTarget = interpPos;
 
-		cam.SetTarget(newTarget);
+		camComp->SetTarget(newTarget);
 	}
 }
 

@@ -191,17 +191,25 @@ namespace MyEngine {
 		Vec3 previousPosition;
 		Quat previousRotation;
 
-		void SavePrevious() {
+		void SavePrevious() 
+		{
 			previousPosition = position;
 			previousRotation = rotation;
 		}
 
-		Vec3 GetInterpolatedPosition(float alpha) const {
+		Vec3 GetInterpolatedPosition(float alpha) const 
+		{
 			return Vec3::Lerp(previousPosition, position, alpha);
 		}
 
-		Quaternion GetInterpolatedRotation(float alpha) const {
+		Quaternion GetInterpolatedRotation(float alpha) const 
+		{
 			return Quat::Slerp(previousRotation, rotation, alpha);
+		}
+
+		Vec3 GetForward() const
+		{
+			return rotation.RotateVector(Vec3(0, 0, 1));
 		}
 
 		GameTransform() : position(Vec3(0, 0, 0)), rotation(Quat(0, 0, 0, 1)), scale(Vec3(1, 1, 1)) {}
